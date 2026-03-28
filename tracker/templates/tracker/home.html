@@ -1,6 +1,30 @@
 {% extends 'tracker/base.html' %}
 
 {% block content %}
-<h1>Welcome to Expense Tracker</h1>
-<p>This is my Django project.</p>
+
+<h2>All Expenses</h2>
+
+<table class="table">
+    <tr>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Delete</th>
+    </tr>
+
+    {% for expense in expenses %}
+    <tr>
+        <td>{{ expense.title }}</td>
+        <td>{{ expense.amount }}</td>
+        <td>{{ expense.date }}</td>
+        <td>{{ expense.category }}</td>
+        <td>
+            <a href="/delete/{{ expense.id }}/" class="btn btn-danger">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
 {% endblock %}
