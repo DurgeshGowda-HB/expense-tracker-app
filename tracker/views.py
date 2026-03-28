@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
+from .models import Expense
 from .forms import ExpenseForm
 
 def home(request):
-    return render(request, 'tracker/home.html')
+    expenses = Expense.objects.all()
+    return render(request, 'tracker/home.html', {'expenses': expenses})
 
 def add_expense(request):
     if request.method == 'POST':
@@ -14,3 +16,8 @@ def add_expense(request):
         form = ExpenseForm()
 
     return render(request, 'tracker/add_expense.html', {'form': form})
+
+def delete_expense(request, id):
+    expense = Expense.objects.get(id=id)
+    expense.delete()
+    return redirect('/')
