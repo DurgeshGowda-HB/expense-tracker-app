@@ -21,3 +21,16 @@ def delete_expense(request, id):
     expense = Expense.objects.get(id=id)
     expense.delete()
     return redirect('/')
+
+def edit_expense(request, id):
+    expense = Expense.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST, instance=expense)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = ExpenseForm(instance=expense)
+
+    return render(request, 'tracker/edit_expense.html', {'form': form})
