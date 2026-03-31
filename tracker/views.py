@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Expense
 from .forms import ExpenseForm
+from django.db.models import Sum
+
+def dashboard(request):
+    total = Expense.objects.aggregate(Sum('amount'))['amount__sum']
+    return render(request, 'tracker/dashboard.html', {'total': total})
 
 def home(request):
     expenses = Expense.objects.all()
