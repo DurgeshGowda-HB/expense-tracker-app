@@ -4,6 +4,21 @@
 
 <h2>All Expenses</h2>
 
+<form method="GET" class="mb-3">
+    <input type="text" name="search" placeholder="Search expense" class="form-control mb-2">
+
+    <select name="category" class="form-control mb-2">
+        <option value="">All Categories</option>
+        <option value="Food">Food</option>
+        <option value="Travel">Travel</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Bills">Bills</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
 <table class="table">
     <tr>
         <th>Title</th>
