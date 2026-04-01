@@ -9,6 +9,16 @@ def dashboard(request):
 
 def home(request):
     expenses = Expense.objects.all()
+
+    category = request.GET.get('category')
+    search = request.GET.get('search')
+
+    if category:
+        expenses = expenses.filter(category=category)
+
+    if search:
+        expenses = expenses.filter(title__icontains=search)
+
     return render(request, 'tracker/home.html', {'expenses': expenses})
 
 def add_expense(request):
