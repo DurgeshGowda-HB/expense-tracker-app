@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import Expense
 from .forms import ExpenseForm
 from django.db.models import Sum
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, logout, authenticate
 
 def dashboard(request):
     total = Expense.objects.aggregate(Sum('amount'))['amount__sum']
@@ -25,7 +27,9 @@ def add_expense(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
-            form.save()
+            expense = form.save(commit=False)
+            expense.user = request.user
+            expense.save()
             return redirect('/')
     else:
         form = ExpenseForm()
@@ -49,3 +53,15 @@ def edit_expense(request, id):
         form = ExpenseForm(instance=expense)
 
     return render(request, 'tracker/edit_expense.html', {'form': form})
+
+def register(request):
+    form = UserCreationForm()
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('/')
+
+    return render(request, 'tracker/register.html', {'form': form})
