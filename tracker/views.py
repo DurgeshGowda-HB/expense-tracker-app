@@ -65,3 +65,16 @@ def register(request):
             return redirect('/')
 
     return render(request, 'tracker/register.html', {'form': form})
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+
+    return render(request, 'tracker/login.html')
