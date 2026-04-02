@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import Expense
 from .forms import ExpenseForm
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 
+@login_required
 def dashboard(request):
     total = Expense.objects.aggregate(Sum('amount'))['amount__sum']
     return render(request, 'tracker/dashboard.html', {'total': total})
 
+@login_required
 def home(request):
-    expenses = Expense.objects.all()
+    expenses = Expense.objects.filter(user=request.user)
 
     category = request.GET.get('category')
     search = request.GET.get('search')
@@ -23,6 +26,7 @@ def home(request):
 
     return render(request, 'tracker/home.html', {'expenses': expenses})
 
+@login_required
 def add_expense(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
@@ -78,3 +82,7 @@ def user_login(request):
             return redirect('/')
 
     return render(request, 'tracker/login.html')
+
+def user_logout(request):
+    logout(request)
+    return redirect('/login/')
