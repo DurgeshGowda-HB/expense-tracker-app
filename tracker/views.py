@@ -5,11 +5,24 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
+from django.db.models.functions import ExtractMonth
 
 @login_required
 def dashboard(request):
-    total = Expense.objects.aggregate(Sum('amount'))['amount__sum']
-    return render(request, 'tracker/dashboard.html', {'total': total})
+    expenses = Expense.objects.filter(user=request.user)
+
+    total = expenses.aggregate(Sum('amount'))['amount__sum']
+
+    monthly = expenses.annotate(month=ExtractMonth('date')) \
+        .values('month') \
+        .annotate(total=Sum('amount')) \
+        .order_by('month')
+
+    return render(request, 'tracker/dashboard.html', {
+        'total': total,
+        'monthly': monthly
+    })
+
 
 @login_required
 def home(request):
