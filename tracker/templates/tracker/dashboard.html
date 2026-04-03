@@ -1,26 +1,17 @@
-{% extends 'tracker/base.html' %}
-
-{% block content %}
 <h2>Dashboard</h2>
-
 <h4>Total Expense: {{ total }}</h4>
 
 <canvas id="expenseChart"></canvas>
 
+{{ monthly|json_script:"monthly-data" }}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    const labels = [
-        {% for item in monthly %}
-            "{{ item.month }}",
-        {% endfor %}
-    ];
+    const monthlyData = JSON.parse(document.getElementById('monthly-data').textContent);
 
-    const dataValues = [
-        {% for item in monthly %}
-            {{ item.total }},
-        {% endfor %}
-    ];
+    const labels = monthlyData.map(item => item.month);
+    const dataValues = monthlyData.map(item => item.total);
 
     const data = {
         labels: labels,
@@ -38,5 +29,3 @@
 
     new Chart(document.getElementById('expenseChart'), config);
 </script>
-
-{% endblock %}

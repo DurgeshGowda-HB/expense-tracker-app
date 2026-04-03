@@ -6,21 +6,26 @@ from django.db.models import Sum
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.db.models.functions import ExtractMonth
+from django.db.models.functions import TruncMonth
 
 @login_required
 def dashboard(request):
     expenses = Expense.objects.filter(user=request.user)
 
-    total = expenses.aggregate(Sum('amount'))['amount__sum']
+    total = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
 
-    monthly = expenses.annotate(month=ExtractMonth('date')) \
-        .values('month') \
-        .annotate(total=Sum('amount')) \
-        .order_by('month')
+    monthly = expenses.annotate(month=TruncMonth('date')) \
+                      .values('month') \
+                      .annotate(total=Sum('amount')) \
+                      .order_by('month')
+
+    # Convert month to string
+    for item in monthly:
+        item['month'] = item['month'].strftime('%b %Y')
 
     return render(request, 'tracker/dashboard.html', {
         'total': total,
-        'monthly': monthly
+        'monthly': list(monthly)
     })
 
 
