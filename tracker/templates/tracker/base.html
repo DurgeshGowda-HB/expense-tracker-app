@@ -9,13 +9,17 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Expense Tracker</a>
+    
             <div>
                 <a class="btn btn-light" href="/">Home</a>
                 <a class="btn btn-light" href="/add/">Add Expense</a>
                 <a class="btn btn-light" href="/dashboard/">Dashboard</a>
+                <a class="btn btn-light" href="/profile/">Profile</a>
+                <span class="text-white ms-3">Hello, {{ request.user.username }}</span>
             </div>
         </div>
     </nav>
+    
     
 
 <div class="container mt-4">
