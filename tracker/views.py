@@ -7,6 +7,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.db.models.functions import ExtractMonth
 from django.db.models.functions import TruncMonth
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile(request):
+    return render(request, 'tracker/profile.html')
+
 
 @login_required
 def dashboard(request):
