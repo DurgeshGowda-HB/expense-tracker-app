@@ -41,12 +41,17 @@ def home(request):
 
     category = request.GET.get('category')
     search = request.GET.get('search')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
 
     if category:
         expenses = expenses.filter(category=category)
 
     if search:
         expenses = expenses.filter(title__icontains=search)
+
+    if start_date and end_date:
+        expenses = expenses.filter(date__range=[start_date, end_date])
 
     return render(request, 'tracker/home.html', {'expenses': expenses})
 
