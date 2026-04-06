@@ -55,6 +55,25 @@ def home(request):
 
     return render(request, 'tracker/home.html', {'expenses': expenses})
 
+import csv
+from django.http import HttpResponse
+
+@login_required
+def export_csv(request):
+    expenses = Expense.objects.filter(user=request.user)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="expenses.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Title', 'Amount', 'Date', 'Category'])
+
+    for expense in expenses:
+        writer.writerow([expense.title, expense.amount, expense.date, expense.category])
+
+    return response
+
+
 @login_required
 def add_expense(request):
     if request.method == 'POST':
