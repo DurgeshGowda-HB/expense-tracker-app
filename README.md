@@ -1,15 +1,31 @@
 # Expense Tracker (Django)
 
-This is a Django-based Expense Tracker project.
+A full-stack Expense Tracker web application built using Django.
 
-## Tech Stack
+## 🚀 Features
+- User Authentication (Login/Register/Logout)
+- Add, Edit, Delete Expenses
+- Dashboard with Monthly Chart
+- Category & Date Filters
+- Search Functionality
+- Export to CSV
+- Multi-user Support
+
+## 🛠 Tech Stack
 - Python
 - Django
+- SQLite
+- Bootstrap
+- Chart.js
 
-## Features (Planned)
-- User Authentication
-- Add/Edit Expenses
-- Dashboard & Analytics
+## 📸 Screenshots
+(Add screenshots here)
 
-## Status
-Project started - building step by step 🚀
+## ⚙️ Setup
+
+```bash
+git clone https://github.com/your-username/expense-tracker-app.git
+cd expense-tracker-app
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
