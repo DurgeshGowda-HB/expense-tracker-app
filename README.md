@@ -19,7 +19,9 @@ A full-stack Expense Tracker web application built using Django.
 - Chart.js
 
 ## 📸 Screenshots
-(Add screenshots here)
+
+![Home](screenshots/home.png)
+![Dashboard](screenshots/dashboard.png)
 
 ## ⚙️ Setup
 
